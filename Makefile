@@ -1,9 +1,13 @@
 .SILENT:
-NAME		=	malloc
+HOSTTYPE	?=	$(shell uname -m)_$(shell uname -s)
+
+NAME		:=	$(addprefix libft_malloc_, $(addsuffix .so, $(HOSTTYPE)))
 
 CC			=	cc
 
 CFLAGS		=	-Wall -Wextra -Werror -g #-fsanitize=address
+
+LIBCFLAGS	=	-fPIC
 
 VAL_FLAGS	=	--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes
 
@@ -15,12 +19,14 @@ SRC_DIR		=	sources/
 
 OBJ_DIR		=	temp/
 
-SRC			=	$(addprefix $(SRC_DIR),	main.c)
+SRC			=	$(addprefix $(SRC_DIR),	realloc.c \
+										malloc.c \
+										show_alloc_mem.c \
+										free.c)
 
-OBJ_DIRS		=	$(OBJ_DIR)	$(addprefix $(OBJ_DIR), $(CLASS_DIR)) \
-								$(addprefix $(OBJ_DIR), $(NAMES_DIR))
+OBJ_DIRS	=	$(OBJ_DIR)
 
-OBJ				=	$(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
+OBJ			=	$(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 
 GREEN		=	\033[0;32m
 
@@ -34,7 +40,7 @@ BROOM		=	\U0001F9F9
 
 $(NAME):		$(OBJ)
 				printf '$(HAMMER)\n\t$(GREEN)Compiling $(NAME)$(RESET)\n'
-				$(CC) $(CFLAGS) $^ -o $@ -I $(INC_DIR)
+				$(CC) $(CFLAGS) $(LIBCFLAGS) -shared $^ -o $@
 				make compiled
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c | $(OBJ_DIRS)
@@ -44,6 +50,7 @@ $(OBJ_DIR)%.o:	$(SRC_DIR)%.c | $(OBJ_DIRS)
 
 $(OBJ_DIRS):
 				mkdir -p $@
+
 
 all:			$(NAME)
 
@@ -57,12 +64,6 @@ fclean:			clean
 
 re:				fclean	all
 
-run:			all
-				./$(NAME)
-
-val:			all
-				valgrind $(VAL_FLAGS) ./$(NAME)
-
 compiled:
 				printf "															 	\n"
 				printf "$(GREEN)	$(NAME)							 			$(RESET)\n"
@@ -75,4 +76,4 @@ compiled:
 				printf "$(GREEN)                     |_|                        $(RESET)\n"
 				printf "																\n"
 
-.PHONY: 		all fclean re
+.PHONY: 		all fclean re compiled

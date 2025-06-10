@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.h                                           :+:      :+:    :+:   */
+/*   realloc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/09 13:19:06 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/06/09 13:19:37 by dda-cunh         ###   ########.fr       */
+/*   Created: 2025/06/09 15:27:22 by dda-cunh          #+#    #+#             */
+/*   Updated: 2025/06/09 15:27:53 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _MALLOC_H
-# define _MALLOC_H
+#include "../includes/libft_malloc.h"
 
-#endif
+void	*realloc(void *ptr, size_t size)
+{
+	return (NULL);
+}
