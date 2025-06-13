@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:28:15 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/06/13 19:59:54 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:22:37 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern malloc_zones	g_malloc_zones;
 
-static void	free_from_malloc_zone(void *chunk_bytes, malloc_zone *zone)
+static void	free_from_fixed_zone(void *chunk_bytes, fixed_zone *zone)
 {
 	uint8_t	*zone_bytes;
 	_size_t	header;
@@ -33,7 +33,7 @@ static void	free_from_malloc_zone(void *chunk_bytes, malloc_zone *zone)
 			return ;
 		}
 
-		zone_bytes += block_real_len(zone->block_size);
+		zone_bytes += zone->block_size;
 	}
 }
 
@@ -55,7 +55,7 @@ void	free(void *ptr)
 	if (IS_LARGE(size))
 		munmap(chunk_bytes, size);
 	else if (size > TINY_SIZE)
-		free_from_malloc_zone(chunk_bytes, &g_malloc_zones.small);
+		free_from_fixed_zone(chunk_bytes, &g_malloc_zones.small);
 	else
-		free_from_malloc_zone(chunk_bytes, &g_malloc_zones.tiny);
+		free_from_fixed_zone(chunk_bytes, &g_malloc_zones.tiny);
 }
