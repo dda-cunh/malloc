@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 13:19:06 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/06/13 20:18:40 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:46:34 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,18 @@
 
 #define IS_LARGE(size)		((size) > SMALL_SIZE)
 
-typedef struct s_dynamic_zone	dynamic_zone;
-struct s_dynamic_zone
-{
-	void			*block;
-	dynamic_zone	*next;
-};
-
-typedef struct s_fixed_zone		fixed_zone;
-struct s_fixed_zone
+typedef struct s_fixed_zone
 {
 	void	*start;
 	_size_t	block_size;
 	_size_t	block_count;
-};
+}	fixed_zone;
 
-typedef struct s_malloc_zones	malloc_zones;
-struct s_malloc_zones
+typedef struct s_malloc_zones
 {
 	fixed_zone		tiny;
 	fixed_zone		small;
-	dynamic_zone	large;
-};
-
+}	malloc_zones;
 
 void	*realloc(void *ptr, size_t size);
 void	*malloc(size_t size);
