@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 13:19:06 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/06/13 20:46:34 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:56:51 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 #include <sys/mman.h>
 #include <stddef.h>
 #include <stdint.h>
-
-#define ALIGNMENT			8
+#include <unistd.h>		 
 
 #define _size_t				uint64_t
 

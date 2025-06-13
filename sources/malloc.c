@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 13:21:23 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/06/13 20:46:41 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:57:09 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ malloc_zones	g_malloc_zones = {
 										SMALL_BLOCKS
 									}
 								};
+
+//PAGE SIZE sysconf(_SC_PAGESIZE)
 
 void	*malloc(size_t size)
 {
