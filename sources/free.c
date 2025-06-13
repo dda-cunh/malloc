@@ -6,14 +6,56 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:28:15 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/06/09 15:28:52 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/06/13 19:59:54 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
 
+extern malloc_zones	g_malloc_zones;
+
+static void	free_from_malloc_zone(void *chunk_bytes, malloc_zone *zone)
+{
+	uint8_t	*zone_bytes;
+	_size_t	header;
+
+	if (!chunk_bytes || !zone)
+		return ;
+
+	zone_bytes = (uint8_t *)zone->start;
+
+	for (_size_t i = 0; i < zone->block_count; i++)
+	{
+		if (chunk_bytes == zone_bytes)
+		{
+			FLIP_ALLOC(GET_HEADER(chunk_bytes));
+
+			return ;
+		}
+
+		zone_bytes += block_real_len(zone->block_size);
+	}
+}
+
 void	free(void *ptr)
 {
+	uint8_t	*chunk_bytes;
+	_size_t	*header;
+	_size_t	size;
+
 	if (!ptr)
 		return ;
+
+	chunk_bytes = GET_BLOCK(ptr);
+	header = GET_HEADER(chunk_bytes);
+	if (!(IS_ALLOC(*header)))
+		return ;
+
+	size = BLOCK_SIZE(*header);
+	if (IS_LARGE(size))
+		munmap(chunk_bytes, size);
+	else if (size > TINY_SIZE)
+		free_from_malloc_zone(chunk_bytes, &g_malloc_zones.small);
+	else
+		free_from_malloc_zone(chunk_bytes, &g_malloc_zones.tiny);
 }

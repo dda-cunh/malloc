@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/09 13:21:23 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/06/13 19:59:59 by dda-cunh         ###   ########.fr       */
+/*   Created: 2025/06/13 19:09:44 by dda-cunh          #+#    #+#             */
+/*   Updated: 2025/06/13 19:14:38 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
 
-malloc_zones	g_malloc_zones = {
-									{
-										NULL,
-										TINY_SIZE,
-										TINY_BLOCKS
-									},
-									{
-										NULL,
-										SMALL_SIZE,
-										SMALL_BLOCKS
-									}
-								};
-
-void	*malloc(size_t size)
+_size_t block_real_len(_size_t len)
 {
-	return (NULL);
+	if (IS_LARGE(len))
+		return (len + HEADER_SIZE);
+
+	if (len > TINY_SIZE)
+		return (SMALL_SIZE);
+	return (TINY_SIZE);
 }
