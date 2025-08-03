@@ -6,24 +6,11 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 13:21:23 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/06/13 20:57:09 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/08/03 11:41:07 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
-
-malloc_zones	g_malloc_zones = {
-									{
-										NULL,
-										TINY_SIZE,
-										TINY_BLOCKS
-									},
-									{
-										NULL,
-										SMALL_SIZE,
-										SMALL_BLOCKS
-									}
-								};
 
 //PAGE SIZE sysconf(_SC_PAGESIZE)
 

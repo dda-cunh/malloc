@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 13:19:06 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/06/13 20:56:51 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/08/03 11:36:48 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,15 @@
 # define _LIBFT_MALLOC_H
 
 #include <sys/mman.h>
+#include <pthread.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <unistd.h>		 
+#include <unistd.h>
+
+#define GET_PAGE_SIZE()		sysconf(_SC_PAGESIZE)
+#define COMPILE_PAGE_SIZE	4096
+
+#define MALLOC_INIT()		malloc_global_init_once()
 
 #define _size_t				uint64_t
 
@@ -33,10 +39,14 @@
 #define ALLOC_FLAG			1
 #define SIZE_SHIFT			1
 
-#define SMALL_BLOCKS		120
-#define TINY_BLOCKS			150
-#define SMALL_SIZE			1024
-#define TINY_SIZE			128
+#define SMALL_PAGES			30
+#define TINY_PAGES			9
+
+#define SMALL_BLOCK_SIZE	1024
+#define TINY_BLOCK_SIZE		128
+
+#define SMALL_BLOCKS     	((SMALL_PAGES * COMPILE_PAGE_SIZE) / SMALL_BLOCK_SIZE)
+#define TINY_BLOCKS      	((TINY_PAGES * COMPILE_PAGE_SIZE) / TINY_BLOCK_SIZE)
 
 #define IS_LARGE(size)		((size) > SMALL_SIZE)
 
@@ -53,12 +63,17 @@ typedef struct s_malloc_zones
 	fixed_zone		small;
 }	malloc_zones;
 
+extern malloc_zones	g_malloc_zones;
+
 void	*realloc(void *ptr, size_t size);
 void	*malloc(size_t size);
 void	show_alloc_mem();
 void	free(void *ptr);
 
-/********************************  Utils  *******************************/
+/*******************************  Utils  ********************************/
 _size_t	block_real_len(_size_t len);
+
+/******************************  Globals  *******************************/
+void	malloc_global_init_once(void);
 
 #endif
