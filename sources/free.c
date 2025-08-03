@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:28:15 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/08/03 10:58:26 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/08/03 12:32:06 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	free(void *ptr)
 	size = BLOCK_SIZE(*header);
 	if (IS_LARGE(size))
 		munmap(chunk_bytes, size + HEADER_SIZE);
-	else if (size > TINY_SIZE)
+	else if (size > TINY_BLOCK_SIZE)
 		free_from_fixed_zone(chunk_bytes, &g_malloc_zones.small);
 	else
 		free_from_fixed_zone(chunk_bytes, &g_malloc_zones.tiny);

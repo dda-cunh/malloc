@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 13:19:06 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/08/03 11:36:48 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/08/03 12:32:01 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@
 #define SMALL_BLOCKS     	((SMALL_PAGES * COMPILE_PAGE_SIZE) / SMALL_BLOCK_SIZE)
 #define TINY_BLOCKS      	((TINY_PAGES * COMPILE_PAGE_SIZE) / TINY_BLOCK_SIZE)
 
-#define IS_LARGE(size)		((size) > SMALL_SIZE)
+#define IS_LARGE(size)		((size) > TINY_BLOCK_SIZE)
 
 typedef struct s_fixed_zone
 {
