@@ -1,1 +1,5 @@
 temp/
+logs*
+test_malloc
+*.o
+*.so

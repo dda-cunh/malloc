@@ -1,46 +1,63 @@
 .SILENT:
+
 HOSTTYPE	?=	$(shell uname -m)_$(shell uname -s)
 
 NAME		:=	$(addprefix libft_malloc_, $(addsuffix .so, $(HOSTTYPE)))
 
-CC			=	cc
+ROOT_DIR	:=	$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-CFLAGS		=	-Wall -Wextra -Werror -g #-fsanitize=address
+CC			:=	cc
 
-LIBCFLAGS	=	-fPIC
+CFLAGS		:=	-Wall -Wextra -Werror -fPIC -g #-fsanitize=address
 
-VAL_FLAGS	=	--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes
+LIBCFLAGS	:=	-shared
 
-RM			=	rm -rf
+VAL_FLAGS	:=	--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes
 
-INC_DIR		=	includes/
+RM			:=	rm -rf
 
-SRC_DIR		=	sources/
+INC_DIR		:=	includes/
 
-OBJ_DIR		=	temp/
+SRC_DIR		:=	sources/
 
-SRC			=	$(addprefix $(SRC_DIR),	realloc.c \
+OBJ_DIR		:=	temp/
+
+LIBS_DIR	:=	lib/
+
+LFT_PATH	:=	$(addprefix $(LIBS_DIR), libft/)
+
+CSTACK_PATH	:=	$(addprefix $(LIBS_DIR), cstack/)
+
+LINKS		:=	-L$(LFT_PATH) -lft # -L$(CSTACK_PATH) -lcstack
+
+SRC			:=	$(addprefix $(SRC_DIR),	realloc.c \
 										malloc.c \
 										show_alloc_mem.c \
-										free.c)
+										free.c \
+										globals.c \
+										utils.c)
 
-OBJ_DIRS	=	$(OBJ_DIR)
+OBJ_DIRS	:=	$(OBJ_DIR)
 
-OBJ			=	$(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
+OBJ			:=	$(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 
-GREEN		=	\033[0;32m
+GREEN		:=	\033[0;32m
 
-RESET		=	\033[0m
+RESET		:=	\033[0m
 
-SUS			=	\U00000D9E
+SUS			:=	\U00000D9E
 
-HAMMER		=	\U0001F528
+HAMMER		:=	\U0001F528
 
-BROOM		=	\U0001F9F9
+BROOM		:=	\U0001F9F9
+
+
 
 $(NAME):		$(OBJ)
 				printf '$(HAMMER)\n\t$(GREEN)Compiling $(NAME)$(RESET)\n'
-				$(CC) $(CFLAGS) $(LIBCFLAGS) -shared $^ -o $@
+				make dependencies
+				$(CC) $(CFLAGS) $(LIBCFLAGS) $^ -o $@ $(LINKS)
+				ln -s $(NAME) libft_malloc.so
 				make compiled
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c | $(OBJ_DIRS)
@@ -59,10 +76,17 @@ clean:
 
 fclean:			clean
 				printf '$(BROOM)\n$(BROOM)\t$(GREEN)Cleaning project$(RESET)\n'
+				make -C $(LFT_PATH) fclean
 				$(RM) $(NAME)
 				printf '$(BROOM)\t\t\t$(SUS)\n'
 
 re:				fclean	all
+
+
+dependencies:
+					make -C $(LFT_PATH)
+# 					make -C $(CSTACK_PATH)
+
 
 compiled:
 				printf "															 	\n"

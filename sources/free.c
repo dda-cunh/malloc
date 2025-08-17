@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:28:15 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/08/03 18:30:14 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/08/15 22:47:42 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free(void *ptr)
 {
-	uint8_t	*chunk_bytes;
+	byte	*chunk_bytes;
 	_size_t	*header;
 
 	if (!ptr)
@@ -29,12 +29,12 @@ void	free(void *ptr)
 
 	if (IS_FIXED(header))
 	{
-		FLIP_ALLOC(header);
+		CLR_ALLOC(header);
 		if (BLOCK_SIZE(header) > TINY_BLOCK_SIZE)
 			g_malloc_zones.small.free_blocks++;
 		else
 			g_malloc_zones.tiny.free_blocks++;
 	}
 	else
-		munmap(chunk_bytes, block_real_len(chunk_bytes));
+		munmap(chunk_bytes, get_aligned_size(HEADER_SIZE + BLOCK_SIZE(header)));
 }
