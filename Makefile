@@ -2,7 +2,11 @@
 
 HOSTTYPE	?=	$(shell uname -m)_$(shell uname -s)
 
-NAME		:=	$(addprefix libft_malloc_, $(addsuffix .so, $(HOSTTYPE)))
+BASENAME	:=	libft_malloc
+
+NAME		:=	$(addprefix $(BASENAME)_, $(addsuffix .so, $(HOSTTYPE)))
+
+LIBLINK		:=	$(BASENAME).so
 
 ROOT_DIR	:=	$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
@@ -52,12 +56,11 @@ HAMMER		:=	\U0001F528
 BROOM		:=	\U0001F9F9
 
 
-
 $(NAME):		$(OBJ)
 				printf '$(HAMMER)\n\t$(GREEN)Compiling $(NAME)$(RESET)\n'
 				make dependencies
 				$(CC) $(CFLAGS) $(LIBCFLAGS) $^ -o $@ $(LINKS)
-				ln -s $(NAME) libft_malloc.so
+				ln -s $(NAME) $(LIBLINK)
 				make compiled
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c | $(OBJ_DIRS)
@@ -78,6 +81,7 @@ fclean:			clean
 				printf '$(BROOM)\n$(BROOM)\t$(GREEN)Cleaning project$(RESET)\n'
 				make -C $(LFT_PATH) fclean
 				$(RM) $(NAME)
+				$(RM) $(LIBLINK)
 				printf '$(BROOM)\t\t\t$(SUS)\n'
 
 re:				fclean	all
@@ -86,7 +90,6 @@ re:				fclean	all
 dependencies:
 					make -C $(LFT_PATH)
 # 					make -C $(CSTACK_PATH)
-
 
 compiled:
 				printf "															 	\n"

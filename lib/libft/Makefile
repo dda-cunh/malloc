@@ -18,6 +18,7 @@ SRC		= 	ft_memset.c \
 			ft_strrchr.c \
 			ft_strnstr.c \
 			ft_strncmp.c \
+			ft_strcmp.c \
 			ft_strreplace.c \
 			ft_atoi.c \
 			ft_atof.c \
@@ -32,6 +33,7 @@ SRC		= 	ft_memset.c \
 			ft_calloc.c \
 			ft_strdup.c \
 			ft_substr.c \
+			ft_strcpy.c \
 			ft_strjoin.c \
 			ft_striteri.c \
 			ft_strtrim.c \

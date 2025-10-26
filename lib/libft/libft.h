@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 18:16:59 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/08/17 13:25:27 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/10/26 13:02:39 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,14 @@ char	*ft_strnstr(const char *h, const char *n, size_t l);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strdup_tail(const char *s, size_t tail);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strcpy(char *dest, const char *src);
 char	**ft_split(char const *s, char c);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strcmp(const char *s1, const char *s2);
 
 /* ************************************************************************** */
 /*                                     CHAR                                   */
