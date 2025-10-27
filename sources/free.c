@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:28:15 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/08/15 22:47:42 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/10/27 12:39:40 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,5 @@ void	free(void *ptr)
 			g_malloc_zones.tiny.free_blocks++;
 	}
 	else
-		munmap(chunk_bytes, get_aligned_size(HEADER_SIZE + BLOCK_SIZE(header)));
+		munmap(chunk_bytes, get_aligned_size(BLOCK_SIZE(header)));
 }

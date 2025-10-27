@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:09:44 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/08/15 22:30:43 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/10/27 12:38:25 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ _size_t	get_aligned_size(_size_t size)
 	static _size_t pagesize;
 
 	pagesize = sysconf(_SC_PAGESIZE);
+
+	size += HEADER_SIZE;
 
 	return (((size + pagesize - 1) / pagesize) * pagesize);
 }

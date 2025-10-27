@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:27:22 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/08/16 17:02:59 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/10/27 12:38:52 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	*realloc(void *ptr, size_t size)
 	{
 		if (!IS_FIXED(header))
 		{
-			_size_t	old_aligned = get_aligned_size(old_len + HEADER_SIZE);
-			_size_t	new_aligned = get_aligned_size(size + HEADER_SIZE);
+			_size_t	old_aligned = get_aligned_size(old_len);
+			_size_t	new_aligned = get_aligned_size(size);
 
 			if (new_aligned < old_aligned)
 				munmap((byte *)header + new_aligned,

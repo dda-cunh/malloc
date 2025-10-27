@@ -6,13 +6,11 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 13:21:23 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/08/17 13:48:00 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/10/27 12:53:44 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
-#include <unistd.h>
-
 
 static void	*get_fixed_zone_block(fixed_zone *zone, _size_t size)
 {
@@ -25,7 +23,7 @@ static void	*get_fixed_zone_block(fixed_zone *zone, _size_t size)
 		{
 			*header = MAKE_HEADER(size, 1, 1);
 			zone->free_blocks--;
-			return (header);
+			return ((HEAD_TO_PTR(header)));
 		}
 	}
 
@@ -57,6 +55,9 @@ void		*malloc(size_t size)
 	void		*ptr;
 
 	MALLOC_INIT();
+
+	if (size == 0)
+		return (NULL);
 
 	ptr = NULL;
 	if (size <= TINY_BLOCK_SIZE && g_malloc_zones.tiny.free_blocks > 0)

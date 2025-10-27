@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 13:19:06 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/08/17 13:52:10 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/10/27 12:53:40 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@
 #define IS_ALLOC(b_head)	((*(b_head)) & ALLOC_FLAG)
 #define IS_FIXED(b_head)	((*(b_head)) & FIXED_FLAG)
 #define BLOCK_SIZE(b_head)	((*(b_head)) >> SIZE_SHIFT)
+
+#define HEAD_TO_PTR(b_head)	((void *)((byte *)(b_head) + HEADER_SIZE))
 
 #define SMALL_PAGES			30
 #define TINY_PAGES			9

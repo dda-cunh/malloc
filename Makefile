@@ -60,7 +60,10 @@ $(NAME):		$(OBJ)
 				printf '$(HAMMER)\n\t$(GREEN)Compiling $(NAME)$(RESET)\n'
 				make dependencies
 				$(CC) $(CFLAGS) $(LIBCFLAGS) $^ -o $@ $(LINKS)
-				ln -s $(NAME) $(LIBLINK)
+				if [ ! -f $(LIBLINK) ]; \
+				then \
+					ln -s $(NAME) $(LIBLINK); \
+				fi
 				make compiled
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c | $(OBJ_DIRS)
