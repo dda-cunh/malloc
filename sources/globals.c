@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 11:30:34 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/08/17 13:49:24 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/11/02 14:20:00 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,35 +35,18 @@ static void	malloc_global_init(void)
 {
 	_size_t	*header;
 
-	g_malloc_zones.tiny.start = mmap_anon_aligned(
-			g_malloc_zones.tiny.block_count *
-				(g_malloc_zones.tiny.block_size + HEADER_SIZE),
-			PROT_READ | PROT_WRITE);
+	g_malloc_zones.tiny.start = mmap_anon_aligned(TINY_BLOCKS * TINY_BLOCK_SIZE, 1);
+	g_malloc_zones.tiny.size = get_aligned_size(TINY_BLOCKS * TINY_BLOCK_SIZE, 1);
+	// TODO: Populate initian HEADER and FOOTER for the whole fixed_zone
 
-	for (_size_t i = 0; i < g_malloc_zones.tiny.block_count; i++)
-	{
-		header = GET_HEADER(get_fixed_zone_i(g_malloc_zones.tiny.start, i));
-		if (!header)
-			continue ;
 
-		*header = MAKE_HEADER(0, 1, 0);
-		g_malloc_zones.tiny.free_blocks--;
-	}
+	g_malloc_zones.small.start = mmap_anon_aligned(SMALL_BLOCKS * SMALL_BLOCK_SIZE, 1);
+	g_malloc_zones.tiny.size = get_aligned_size(SMALL_BLOCKS * SMALL_BLOCK_SIZE, 1);
+	// TODO: Populate initian HEADER and FOOTER for the whole fixed_zone
 
-	g_malloc_zones.small.start = mmap_anon_aligned(
-			g_malloc_zones.small.block_count *
-				(g_malloc_zones.small.block_size + HEADER_SIZE),
-			PROT_READ | PROT_WRITE);
 
-	for (_size_t i = 0; i < g_malloc_zones.small.block_count; i++)
-	{
-		header = GET_HEADER(get_fixed_zone_i(g_malloc_zones.small.start, i));
-		if (!header)
-			continue ;
+	// TODO: Figure out how LARGE zones bookkeeping should work
 
-		*header = MAKE_HEADER(0, 1, 0);
-		g_malloc_zones.small.free_blocks--;
-	}
 
 	if (DEBUG)
 		g_debug_fd = open(DEBUG_PATH, O_WRONLY | O_CREAT | O_TRUNC, 0644);

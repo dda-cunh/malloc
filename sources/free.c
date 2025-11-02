@@ -6,16 +6,24 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 15:28:15 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/10/27 12:39:40 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/11/02 13:50:56 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
 
+//TODO: Implement
+static void	fixed_coalesce(void *freed, fixed_zone *zone)
+{
+
+}
+
+
 void	free(void *ptr)
 {
 	byte	*chunk_bytes;
 	_size_t	*header;
+	_size_t	size;
 
 	if (!ptr)
 		return ;
@@ -31,10 +39,10 @@ void	free(void *ptr)
 	{
 		CLR_ALLOC(header);
 		if (BLOCK_SIZE(header) > TINY_BLOCK_SIZE)
-			g_malloc_zones.small.free_blocks++;
+			fixed_coalesce(chunk_bytes, &g_malloc_zones.small);
 		else
-			g_malloc_zones.tiny.free_blocks++;
+			fixed_coalesce(chunk_bytes, &g_malloc_zones.tiny);
 	}
 	else
-		munmap(chunk_bytes, get_aligned_size(BLOCK_SIZE(header)));
+		munmap(chunk_bytes, get_aligned_size(BLOCK_SIZE(header), 0));
 }

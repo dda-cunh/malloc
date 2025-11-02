@@ -6,31 +6,22 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 13:21:23 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/10/27 12:53:44 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/11/02 14:30:37 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
+// TODO: REVIEW ALL LIB FILES FOR CONSISTENCY
 
+
+// TODO: Implement logic to get a block from a fixed zone
 static void	*get_fixed_zone_block(fixed_zone *zone, _size_t size)
 {
-	_size_t	*header;
-
-	for (_size_t i = 0; i < zone->block_count; i++)
-	{
-		header = GET_HEADER(get_fixed_zone_i(zone, i));
-		if (!IS_ALLOC(header))
-		{
-			*header = MAKE_HEADER(size, 1, 1);
-			zone->free_blocks--;
-			return ((HEAD_TO_PTR(header)));
-		}
-	}
 
 	return (NULL);
 }
 
-static void		debug(_size_t size, void *ptr)
+static void	debug(_size_t size, void *ptr)
 {
 	static int	count = 0;
 
@@ -42,32 +33,35 @@ static void		debug(_size_t size, void *ptr)
 	ft_putstr_fd("\tAllocated ", g_debug_fd);
 	ft_putnbr_fd(size, g_debug_fd);
 	ft_putchar_fd('(', g_debug_fd);
-	ft_putnbr_fd(get_aligned_size(size), g_debug_fd);
+	ft_putnbr_fd(get_aligned_size(size, 0) - HEADER_SIZE, g_debug_fd);
 	ft_putchar_fd(')', g_debug_fd);
 	ft_putstr_fd(" bytes\t at ", g_debug_fd);
 	ft_putptr_fd(ptr, g_debug_fd);
 	ft_putchar_fd('\n', g_debug_fd);
 }
 
-void		*malloc(size_t size)
+void	*malloc(size_t size)
 {
-	_size_t		*header;
-	void		*ptr;
+	_size_t	*header;
+	void	*ptr;
 
 	MALLOC_INIT();
 
-	if (size == 0)
+	if (size == 0 || INVALID_SIZE(size))
 		return (NULL);
 
+
 	ptr = NULL;
-	if (size <= TINY_BLOCK_SIZE && g_malloc_zones.tiny.free_blocks > 0)
+	if (size <= TINY_BLOCK_SIZE && g_malloc_zones.tiny.capacity
+		>= get_aligned_size(size, 1))
 		ptr = get_fixed_zone_block(&g_malloc_zones.tiny, size);
-	else if (size <= SMALL_BLOCK_SIZE && g_malloc_zones.small.free_blocks > 0)
+	else if (size <= SMALL_BLOCK_SIZE && g_malloc_zones.small.capacity
+				> get_aligned_size(size, 1))
 		ptr = get_fixed_zone_block(&g_malloc_zones.small, size);
 
 	if (ptr == NULL)
 	{
-		ptr = mmap_anon_aligned(HEADER_SIZE + size, PROT_READ | PROT_WRITE);
+		ptr = mmap_anon_aligned(size, 0);
 		if (ptr == NULL)
 			return (NULL);
 
