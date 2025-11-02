@@ -6,7 +6,7 @@
 /*   By: dda-cunh <dda-cunh@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 11:30:34 by dda-cunh          #+#    #+#             */
-/*   Updated: 2025/11/02 14:20:00 by dda-cunh         ###   ########.fr       */
+/*   Updated: 2025/11/02 14:32:33 by dda-cunh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ static void	malloc_global_init(void)
 	g_malloc_zones.tiny.start = mmap_anon_aligned(TINY_BLOCKS * TINY_BLOCK_SIZE, 1);
 	g_malloc_zones.tiny.size = get_aligned_size(TINY_BLOCKS * TINY_BLOCK_SIZE, 1);
 	// TODO: Populate initian HEADER and FOOTER for the whole fixed_zone
+	//			and set capacity (should it consider meta sizes?????)
 
 
 	g_malloc_zones.small.start = mmap_anon_aligned(SMALL_BLOCKS * SMALL_BLOCK_SIZE, 1);
 	g_malloc_zones.tiny.size = get_aligned_size(SMALL_BLOCKS * SMALL_BLOCK_SIZE, 1);
 	// TODO: Populate initian HEADER and FOOTER for the whole fixed_zone
+	//			and set capacity (should it consider meta sizes?????)
 
 
 	// TODO: Figure out how LARGE zones bookkeeping should work
